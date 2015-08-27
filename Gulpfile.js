@@ -1,7 +1,11 @@
 'use strict';
 
 var gulp = require('gulp'),
-    jshint = require('gulp-jshint');
+    jshint = require('gulp-jshint'),
+    gulpBrowserify = require('gulp-browserify'),
+    concat = require('gulp-concat'),
+    minifyCSS = require('gulp-minify-css'),
+    minifyHTML = require('gulp-minify-html');
 
 var paths = {
   scripts: ['./client/*.js','./client/app/*.js', './client/app/**/*.js','./server/*.js', './server/**/*.js'],
