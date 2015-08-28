@@ -2,7 +2,9 @@
 
 angular.module('main').controller('eventController',[
   function(){
-    
+    $scope.test = function(){
+      console.log("it's working!");
+    };
   }
 ]);
 
