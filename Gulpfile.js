@@ -9,10 +9,10 @@ var gulp = require('gulp'),
 
 var paths = {
   scripts: ['./client/*.js','./client/app/*.js', './client/app/**/*.js','./server/*.js', './server/**/*.js'],
-  tests: [],
-  styles: [],
-  index: [],
-  partials: []
+  tests: ['./specs/**/*.js'],
+  styles: ['./client/css/*.css'],
+  index: ['./client/index.html'],
+  partials: ['./client']
 };
 
 gulp.task('lint',function(){
