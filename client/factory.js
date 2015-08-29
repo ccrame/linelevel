@@ -1,6 +1,4 @@
-angular.module('main')
-
-.factory('appFactory', function(){
+module.exports = function factory(){
   var obj = {};
 
 
@@ -58,4 +56,4 @@ angular.module('main')
 
 
   return obj;
-});
+};

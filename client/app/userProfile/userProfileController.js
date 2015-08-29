@@ -1,9 +1,6 @@
 //attaching controllers to main until we find reason to create specific modules
 
-angular.module('main').controller('userProfileController',[
-  function(){
-    
-  }
-]);
+module.exports = function userProfileController(){
+};
 
 //app.module('main').requires.push('userProfile');
