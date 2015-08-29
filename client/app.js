@@ -33,7 +33,7 @@ var app = angular.module('main', ['firebase', 'ui.router'])
       controller: function($scope, $stateParams){
         $scope.eventId = $stateParams.eventId;
       }
-    })
+    });
 }])
 
 .run(['$state', function($state){
