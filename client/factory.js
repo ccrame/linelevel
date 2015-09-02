@@ -3,10 +3,6 @@ angular.module('main')
 .factory('appFactory', function($http){
   var obj = {};
 
-
-  obj.firebase = new Firebase('https://linelevel.firebaseio.com');
-
-
   ///////////////
   ///// HTTP
   ///////////////
@@ -30,6 +26,11 @@ angular.module('main')
     return array;
   }, []);
 
+  obj.firebase = new Firebase('https://linelevel.firebaseio.com');
+  
+  obj.auth = function(){
+    return this.firebase.getAuth() !== null;
+  };
 
   obj.chosenGenres = [];
 
