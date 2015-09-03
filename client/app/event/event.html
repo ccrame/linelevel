@@ -38,7 +38,7 @@ response_type=token">Auth to start stream</a>
       <iframe width="560" height="315" src="https://www.youtube.com/embed/qa2QMn7T6gk" frameborder="0" allowfullscreen></iframe>
       </div> -->
     </div>
-      <div id="chatcontent" ng-show="chatVisible">
+      <div id="chatcontent" ng-show="chatVisible" ng-if="initialize()()">
         <div id="chatMessages">
           <div ng-repeat="message in event.messages" class="message"><b>{{message.username}}:</b> {{message.message}}</div>
         </div>

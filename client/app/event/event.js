@@ -31,32 +31,31 @@ angular.module('main').controller('eventController',['$scope','$http', 'appFacto
 
 
     //fetch chat data as new messages are added
-    var init = function(){
-      ref.off();
-      chatRef.on('child_added', function(snapshot){
-        var data = snapshot.val();
-        $scope.event.messages.push(data);
-        //console.log(data);
-      });
-    };
-    init();
-                          
-    var send = function(user){
-      var text = $scope.userText;
-      chatRef.push({username: user, message: text});
-      $scope.userText = '';
+    $scope.initialize = function(){
+      var alreadyRan = false;
+      return function(){
+        if(!alreadyRan){
+          alreadyRan = !alreadyRan;
+          window.console.log("initialize");
+          ref.off();
+          chatRef.on('child_added', function(snapshot){
+            var data = snapshot.val();
+            $scope.event.messages.push(data);
+            //console.log(data);
+          });
+          appFactory.getUser.then(function(userData){
+            appFactory.user.username = userData.username;
+          });
+        }
+        return true;
+      };
     };
 
     $scope.sendMessage = function(){
       if(appFactory.auth()){
-        if(!appFactory.user.username){
-          appFactory.getUser
-            .then(function(user){
-              send.call(send,user.username);
-            });
-        } else {
-          send.call(send,appFactory.user.username);
-        }
+        var text = $scope.userText;
+        chatRef.push({username: appFactory.user.username, message: text});
+        $scope.userText = '';
       } else {
         console.log('user is not logged in');
       }
