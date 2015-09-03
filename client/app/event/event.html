@@ -44,8 +44,8 @@ response_type=token">Auth to start stream</a>
         </div>
         <textarea id="chatTextbox" ng-model="userText"></textarea>
         <br>
-        <div id="sendButton" ng-click="sendMessage()">
-        <button>Send</button>
+        <div id="sendButton">
+        <button ng-click="sendMessage()" ng-disable="!appFactory.auth()">Send</button>
         </div>
       </div>
     </div>
