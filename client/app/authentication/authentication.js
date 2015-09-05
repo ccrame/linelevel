@@ -85,15 +85,15 @@ angular.module('main')
               });
             } else {
               // code here means username is not unique
-              appFactory.update($scope,function(){
-                $scope.error = "username already exists!";
+              appFactory.update($scope,function(scope){
+                scope.error = "username already exists!";
               });
             }
           }); // end of username check
         } else {
           // code here means email is not unique
-          appFactory.update($scope,function(){
-            $scope.error = "email already in use!";
+          appFactory.update($scope,function(scope){
+            scope.error = "email already in use!";
           });
         }
       });
