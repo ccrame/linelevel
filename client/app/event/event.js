@@ -168,7 +168,7 @@ angular.module('main').controller('eventController',['$scope','$http', 'appFacto
     ////////////////////
     // init functions
     ////////////////////
-
+    
     if(userAuth){
       var userRef = ref.child("users").child(userAuth.uid);
 
@@ -210,6 +210,8 @@ angular.module('main').controller('eventController',['$scope','$http', 'appFacto
     var init = function(){
       if(!$scope.initialized){
         //reset any previous firebase listeners
+        eventRef.child("participants").off();
+        chatRef.off();
         ref.off();
 
         // delay the activation of chat alerts
@@ -235,12 +237,12 @@ angular.module('main').controller('eventController',['$scope','$http', 'appFacto
         });
 
         eventRef.child('videoId').on('value', function(snapshot){
-          console.log('videoId listener', snapshot.val());
+          //console.log('videoId listener', snapshot.val());
           $scope.event.videoId = snapshot.val().videoId;
           setTimeout(function(){
             if($scope.isSameUser !== true){
               $scope.loadStream();
-              console.log('loading stream for videoId', $scope.event.videoId);
+              //console.log('loading stream for videoId', $scope.event.videoId);
             }
           }, 2000);
         });
@@ -280,7 +282,7 @@ angular.module('main').controller('eventController',['$scope','$http', 'appFacto
 
     var updateSameUserStatus = function(){
       if(userData.username === undefined || appFactory.userName === null){
-        console.log("repeat");
+        //console.log("repeat");
         setTimeout(updateSameUserStatus,300);
       } else {
         appFactory.update($scope,function(scope){
