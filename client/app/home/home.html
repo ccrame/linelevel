@@ -1,6 +1,95 @@
 <section ng-controller="homeController">
-  <div id='homeSection1'></div>
-  <div id='homeSection2'></div>
-  <div id='homeSection3'></div>
-  <div id='homeSection4'></div>
+
+  <div class="invisible-div" ng-click="showGenresNow()" ng-class="{menuDown: showGenres, menuUp: !showGenres}"></div>
+  <div class="container">
+    <div class="pageTitle">
+      <div style="display:flex; flex-flow: row nowrap">
+      <h1>Events</h1>
+      </div>
+    </div>
+    <div class="line"></div>
+
+
+    <div id="topHomeSection">
+
+      <div class="eventTabs">
+        <span ng-click="viewFutureEvents()" ng-class="{selectedView: dateView.futureView, notSelectedView: !dateView.futureView}" class="eventTab">
+          Upcoming events
+        </span>
+        <span ng-click="viewPastEvents()" ng-class="{selectedView: dateView.pastView, notSelectedView: !dateView.pastView}" class="viewPastEvents eventTab">
+          Past events
+        </span>
+        <span ng-click="viewDateFilter()" ng-class="{selectedView: dateView.customDateView, notSelectedView: !dateView.customDateView}" class="viewPastEvents eventTab">
+          Custom range
+        </span>
+        <span class="borderExtension">
+        </span>
+      </div>
+
+
+      <div class="filterOptions filterLabel">Filter by:</div>
+      <div class="filterOptions">
+        <div ng-if="dateView.customDateView" class="dateFilter">
+          <div class="dateFilter">DATE:</div>
+          <div class="dateSelection">
+            <input type="date" ng-model="dateView.start">
+            <br class="onlyOnMobile">to
+            <input type="date" ng-model="dateView.end">
+          </div>
+        </div>
+      </div>
+      <div class="filterOptions">
+        <div class="genreList">
+          <div class="dropDownLink" ng-click="showGenresNow()">
+            GENRES<img src="./assets/dropdownarrow.png" ng-class="{pointUp: showGenres}">
+          </div>
+          <ul class="dropDownMenu" ng-class="{menuDown: showGenres, menuUp: !showGenres}">
+            <li ng-repeat="genre in genres" class="genreListItem" ng-click="chooseGenre(genre)" ng-class="{'selected': genre.selected, 'notSelected': !genre.selected}">{{genre.name}}</li>
+          </ul>
+        </div>
+        <div class="filterTextBoxes">
+          <input type="text" class="filterInput" placeholder="TITLE" ng-model="filterByTitle" ng-model-options="{debounce: {'default': debounce}}">
+          
+          <input type="text" placeholder="USER" ng-model="filterByUser" ng-model-options="{debounce: {'default': debounce}}">
+        </div>
+      </div>
+
+    </div>
+
+
+    <div class="eventList">
+      <div ng-repeat="event in filteredEvents(events) | orderBy: 'date': isReverse | limitTo: numLimit">
+        <div class="event fade-list" style="background-image: url({{event.image}})" mouse-over>
+        <div class="event-rsvp">
+          <button class="rsvp" ng-click="saveDate(event.title, event.host, event.key)">+</button>
+        </div>
+          <div class="eventInfo">
+            <img class="event-arrow" src="./assets/arrow.png" width="12px" height="12px" style="left: 5px; top: 5px">
+            <p><span class="event-info-category">Genre:</span><span ng-repeat="genre in event.genre">
+               {{genre}}
+            </p>
+            <p><span class="event-info-category">Date:</span> {{event.date | date: 'short'}}</p>
+            <p><span class="event-info-category">Description:</span> {{event.description}}</p>
+          </div>
+          <div class="eventBackdrop"></div>
+        </div>
+        <div class="event-details">
+            <div class="event-title">
+              <a ui-sref="event({eventId: event.key})">{{event.title}}</a>
+            </div>
+            <div class="event-host">
+          <a class="link" ui-sref="userProfile({userName: event.host})">{{event.host}}</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div ng-if="showMoreButton" class="showMoreEvents" ng-click="increaseNumLimit()">
+      Show More Events
+    </div>
+
+    <div ng-if="!showMoreButton" class="endOfResults">
+      End of Results
+    </div>
+  </div>
 </section>

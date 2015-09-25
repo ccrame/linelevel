@@ -3,37 +3,49 @@
     <h1>Create an Event</h1>
     <div class="line"></div>
     
-    <form name="createEventForm" ng-submit="submitCreateEventForm()" novalidate>
+    <form ng-hide="!isAuth()" name="createEventForm" ng-submit="submitCreateEventForm()" novalidate>
       <div id="createEventForm">
-        <div class='formInputs'>
+        <div class="formInputs">
           <div class="formItem">
             Event:<br> 
-            <input type="text" placeholder="Name of your Event" ng-model="eventTitle" required>
+            <input type="text" placeholder="Name of your Event" data-ng-model="eventTitle" maxlength="18" required>
           </div>
           <div class="formItem">
             Description: <br> 
-            <textarea placeholder="Quick blurb about your event..." ng-model="eventDescription" required></textarea>
+            <textarea placeholder="Quick blurb about your event..." data-ng-model="eventDescription" required></textarea>
           </div>
           <div class="formItem">
             Event Date: <br> 
-            <input type="date" placeholder="today" ng-model="date.eventDate" min="{{today | date:'yyyy-MM-dd'}}" required>
+            <input type="date" placeholder="today" data-ng-model="date.eventDate" min="{{today | date:'yyyy-MM-dd'}}" required>
           </div>
           <div class="formItem">
             Start Time: <br> 
-            <input type="time" placeholder="HH:mm" ng-model="date.eventDate" required>
+            <input type="time" placeholder="HH:mm" data-ng-model="date.eventDate" required>
           </div>
           <div class="formItem">
             Cover Image: <br> 
-            <input type="url" placeholder="http://" ng-model="eventImage">
+            <input type="url" placeholder="http://" data-ng-model="eventImage">
           </div>
           <div class="formItem">
             Record Label: <br> 
-            <input type="text" placeholder="Name of Label" ng-model="eventLabel">
+            <input type="text" placeholder="Name of Label" data-ng-model="eventLabel">
           </div>
+          <div class="formItem">
+            <input class="create-event-checkbox" type="checkbox" data-ng-model="private"> &nbsp;&nbsp;Make Event Private
+          </div>
+          <div class="formItem" ng-hide="!private">
+            <form>
+              <input class="create-event-checkbox" type="radio" data-ng-model="followersOnly" ng-value="true"> &nbsp; Followers Only <br><br>
+              <input class="create-event-checkbox" type="radio" data-ng-model="followersOnly" ng-value="false"> &nbsp; Invitation Only
+            </form>
+          </div>
+          <div class="formItem"></div>
         </div>
 
         <div class="genreList">
-          <div>Which genres describe your event?</div>
+          <div class="formInputs">
+            <div class="formItem">Which genres describe your event?</div>
+          </div>
           <ul>
             <li ng-repeat="genre in genres" ng-click="chooseGenre(genre)" ng-class="{'selected': genre.selected, 'notSelected': !genre.selected}">{{genre.name}}</li>
           </ul>
@@ -44,6 +56,10 @@
         </div>
       </div>
     </form>
+
+    <div ng-hide="isAuth()">
+      Please Log in To Create an Event
+    </div>
     
   </div>
 </section>

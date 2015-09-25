@@ -1,3 +1,100 @@
 <section ng-controller="userProfileController">
-  <h1>User profile</h1>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+  <div class="container" ng-show="loadPage">
+
+    <div class="pageTitle">
+      <div style="display:flex; flex-flow: row nowrap">
+        <h1>{{userName}}</h1>
+        <button ng-show="followMessage.length > 0" ng-click="followUser()" style="position:relative;left: 20px; top: -10px" ng-bind="followMessage"></button>
+      </div>
+    </div>
+
+    <div class="line"></div>
+
+    <div id="genreNames">
+      <div ng-repeat="genre in uData.genres"> {{genre}}<span ng-if="$index !== uData.genres.length-1">, &nbsp;</span> </div>
+    </div>
+
+    <div id="userContent">
+
+      <div id="userInfo" >
+        <img src="{{uData.image}}">
+        <div class="profileInfo"><b>{{uData.username}}</b></div>
+        <div class="profileInfo"> {{uData.firstname}}&nbsp;{{uData.lastname}} </div>
+        <div class="profileInfo"> {{uData.email}} </div>
+
+        <!-- User feed -->
+        <div id="userFeed">
+          <h2>Events</h2>
+          <div ng-repeat="(key, event) in uData.myEvents[0] track by $index">
+            <div class="reserved-events" cancel-event>
+              <div ng-show="myProfile" class="message-tools">
+                <div>
+                <img src="./assets/controls/delete.png" style="width: 20px; height: 20px; margin: 0; padding: 0; border-radius: 0px" class="message-tool" ng-click="removeEvent(key)">
+                </div>
+              </div>
+              <a ui-sref="event({eventId: key})">{{event.title}}</a><br>
+              <a ui-sref="userProfile({userName: event.host})">{{event.host}}</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- Wall Section -->
+      <div id="userWall">
+        <div >
+          <form name="submitMessage" ng-submit="submitWallMsg()">
+            <input class="user-wall-input" type="text" placeholder="Enter your message..." ng-model="wallText" id="chatTextBox">
+          </form>
+        </div>
+
+        <div ng-repeat="message in uData.myWall | orderBy: 'timestamp':true" class="message">
+          <div class="wall-author">
+            <a ui-sref="userProfile({userName: message.username})"><img ng-src="{{message.image}}"></a>
+          </div><!--
+       --><div class="wall-message" edit-bar>
+
+            <!-- Message Edit Tools START -->
+            <div class="message-tools" ng-show="message.canEdit || myProfile">
+              <div ng-show="message.canEdit">
+                <img src="./assets/controls/edit.png" width="20px" height="20px" class="message-tool" ng-click="editingMessage = !editingMessage">
+                </div>
+              <div ng-show="message.canEdit || myProfile">
+                <img src="./assets/controls/delete.png" width="20px" height="20px" class="message-tool" ng-click="deleteWallMsg(message.key, message)">
+                </div>
+            </div>
+            <!-- Message Edit Tools END -->
+
+            <div class="wall-message-header">
+              <a ui-sref="userProfile({userName: message.username})"><b>{{message.fullname}}</b>&nbsp;&nbsp;@{{message.username}}</a>&nbsp;&nbsp;
+              <span ng-bind="getTimeStamp(message.timestamp)"></span>
+            </div>
+
+            <!-- Message Edit Box START -->
+            <div class="text-edit" ng-show="editingMessage">
+              <form name="submitEdit" ng-submit="submitEditWallMsg(message.key, message.message);editingMessage = false">
+                <input class="user-wall-input" type="text" placeholder="Enter your message..." ng-model="message.message" id="chatEditBox" ng-show="editingMessage">
+                <a ng-click="editingMessage=false">Cancel</a>
+              </form>
+            </div>
+            <!-- Message Edit Box END -->
+            <div class="wall-message-text" ng-bind="message.message" ng-show="!editingMessage"></div>
+          </div>
+          
+        </div>
+
+      </div>
+
+       <!-- followers section -->
+      <div id="following">
+        <h2>Following</h2>
+        <div ng-repeat="(name,value) in following" class="profile-following">
+          <a ui-sref="userProfile({userName: name})" ng-bind="name"></a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <div ng-show="!loadPage" class="private-event-message container">Please <a href="#/signin">sign in</a> to view member profiles</div>
 </section>
